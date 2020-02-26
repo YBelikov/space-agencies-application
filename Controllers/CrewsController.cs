@@ -19,10 +19,15 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         }
 
         // GET: Crews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var spaceAgenciesDbContext = _context.Crews.Include(c => c.Mission);
-            return View(await spaceAgenciesDbContext.ToListAsync());
+            if (id == null)
+            {
+                var spaceAgenciesDbContext = _context.Crews.Include(c => c.Mission);
+                return View(await spaceAgenciesDbContext.ToListAsync());
+            }
+            var crews = _context.Crews.Where(crew => crew.MissionId == id).Include(crew => crew.Mission);
+            return View(await crews.ToListAsync());
         }
 
         // GET: Crews/Details/5

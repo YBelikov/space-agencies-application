@@ -21,8 +21,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: Missions
         public async Task<IActionResult> Index(int? id)
         {
-            if (id == null) return RedirectToAction("Index", "SpacePrograms");
-            var spaceAgenciesDbContext = _context.Missions.Where(mis => mis.ProgramId == id).Include(m => m.Program);
+            if (id == null) return  View(_context.Missions);
+            var spaceAgenciesDbContext = _context.Missions.Where(m => m.ProgramId == id).Include(m => m.Program);
             return View(await spaceAgenciesDbContext.ToListAsync());
         }
 
@@ -42,7 +42,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 return NotFound();
             }
 
-            return View(missions);
+            //  return View(missions);
+            return RedirectToAction("Index", "Crews", id);
         }
 
         // GET: Missions/Create
