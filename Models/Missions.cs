@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 namespace SpaceAgenciesDatabaseApp
 {
     public partial class Missions
@@ -11,9 +11,17 @@ namespace SpaceAgenciesDatabaseApp
         }
 
         public int Id { get; set; }
+        [Display(Name = "Start date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+
         public DateTime StartDate { get; set; }
+        [Display(Name = "End date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? EndDate { get; set; }
         public string Title { get; set; }
+        [Display(Name = "Is robotic")]
         public bool IsRobotic { get; set; }
         public int ProgramId { get; set; }
 

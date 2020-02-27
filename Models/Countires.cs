@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpaceAgenciesDatabaseApp
 {
@@ -12,6 +13,7 @@ namespace SpaceAgenciesDatabaseApp
         }
 
         public int Id { get; set; }
+        [Display(Name = "Name")]
         public string CountryName { get; set; }
         public decimal Gdp { get; set; }
         public double Population { get; set; }

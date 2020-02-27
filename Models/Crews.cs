@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpaceAgenciesDatabaseApp
 {
@@ -11,6 +12,8 @@ namespace SpaceAgenciesDatabaseApp
         }
 
         public int Id { get; set; }
+
+        [Display(Name = "Number of crew members")]
         public int NumberOfMembers { get; set; }
         public int MissionId { get; set; }
 

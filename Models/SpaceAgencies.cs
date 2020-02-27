@@ -17,10 +17,14 @@ namespace SpaceAgenciesDatabaseApp
         public string Name { get; set; }
 
         [Display(Name = "Establishment date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode =true)]
+        [DataType(DataType.Date)]
         public DateTime DateOfEstablishment { get; set; }
         
         public double Budget { get; set; }
+
         public int HeadquarterCountryId { get; set; }
+
         [Display(Name = "Headquarters country")]
         public virtual Countires HeadquarterCountry { get; set; }
         public virtual ICollection<Administrators> Administrators { get; set; }
