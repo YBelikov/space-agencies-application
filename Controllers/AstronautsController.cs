@@ -19,10 +19,17 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         }
 
         // GET: Astronauts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var spaceAgenciesDbContext = _context.Astronauts.Include(a => a.Country);
-            return View(await spaceAgenciesDbContext.ToListAsync());
+            if (id == null)
+            {
+                var spaceAgenciesDbContext = _context.Astronauts.Include(a => a.Country);
+                return View(await spaceAgenciesDbContext.ToListAsync());
+            }
+            var astronautsAndCrews = _context.Crews.Include(crews => crews.CrewsAstronauts).ThenInclude(crew => crew.Astronaut)
+                .FirstOrDefault(crews => crews.Id == id);
+            var astronauts = astronautsAndCrews.CrewsAstronauts.Select(c => c.Astronaut).ToList();
+            return View(astronauts);
         }
 
         // GET: Astronauts/Details/5

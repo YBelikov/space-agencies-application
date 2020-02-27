@@ -45,8 +45,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-
-            return View(crews);
+            return RedirectToAction("Index", "Astronauts", id);
+           // return View(crews);
         }
 
         // GET: Crews/Create

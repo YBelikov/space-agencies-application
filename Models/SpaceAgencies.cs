@@ -21,7 +21,7 @@ namespace SpaceAgenciesDatabaseApp
         
         public double Budget { get; set; }
         public int HeadquarterCountryId { get; set; }
-
+        [Display(Name = "Headquarters country")]
         public virtual Countires HeadquarterCountry { get; set; }
         public virtual ICollection<Administrators> Administrators { get; set; }
         public virtual ICollection<AgenciesPrograms> AgenciesPrograms { get; set; }
