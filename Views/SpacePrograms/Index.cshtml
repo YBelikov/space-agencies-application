@@ -24,6 +24,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Target)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProgramsStates)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -43,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.Target)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
@@ -51,3 +54,27 @@
 }
     </tbody>
 </table>
+<div class ="container">
+    <div id="chart2"></div>
+</div>
+
+@section  scripts{ 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', { packages: ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart(){
+            $.get('/api/Charts/ProgramsJsonData', function (jsonData) {
+                data = google.visualization.arrayToDataTable(jsonData, false);
+                    var option = {
+                        title: "Missions to programs ratio",
+                        width: 800,
+                        height: 600,
+                        pieHole: 0.4
+                    };
+                chart = new google.visualization.PieChart(document.getElementById('chart2'));
+                chart.draw(data, option);
+            })
+        }
+    </script>
+}

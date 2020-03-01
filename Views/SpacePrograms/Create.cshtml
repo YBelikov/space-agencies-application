@@ -32,9 +32,17 @@
                 <input asp-for="Target" class="form-control" />
                 <span asp-validation-for="Target" class="text-danger"></span>
             </div>
+            <div class="editor-label">
+                @Html.Label("Agencies");
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("Agencies", String.Empty);
+            </div>
+            <p>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            </p>
         </form>
     </div>
 </div>

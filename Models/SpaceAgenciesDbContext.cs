@@ -78,6 +78,7 @@ namespace SpaceAgenciesDatabaseApp
                     .HasConstraintName("FK_AgenciesPrograms_SpacePrograms");
             });
 
+
             modelBuilder.Entity<Astronauts>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");

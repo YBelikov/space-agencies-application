@@ -51,3 +51,26 @@
 }
     </tbody>
 </table>
+<div class="container">
+    <div id="chart1"></div>
+</div>
+@section  scripts{ 
+    <script type="text/javascript" src ="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', { packages: ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.get('/api/Charts/JsonData', function (jsonData) {
+                data = google.visualization.arrayToDataTable(jsonData, false);
+                var option = {
+                    title: "Programs to agencies ratio",
+                    width: 500,
+                    height: 400
+                    
+                };
+                chart = new google.visualization.PieChart(document.getElementById('chart1'));
+                chart.draw(data, option);
+            })
+        }
+    </script>
+}

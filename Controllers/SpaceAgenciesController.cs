@@ -136,8 +136,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-
-            return View(spaceAgencies);
+           return View(spaceAgencies);
         }
 
         // POST: SpaceAgencies/Delete/5
@@ -145,11 +144,18 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var spaceAgencies = await _context.SpaceAgencies.FindAsync(id);
-            _context.SpaceAgencies.Remove(spaceAgencies);
+            var spaceAgencies = _context.SpaceAgencies.Include(a => a.AgenciesPrograms)
+                .ThenInclude(ap => ap.SpaceProgram).FirstOrDefault(a => a.Id == id);
+            var programs = spaceAgencies.AgenciesPrograms.Select(ap => ap.SpaceProgram).ToList();
+            foreach (var program in programs)
+            {
+                _context.SpacePrograms.Remove(program);
+            }
+            
+            _context.SpaceAgencies.Remove(spaceAgencies); 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
+         }
 
         private bool SpaceAgenciesExists(int id)
         {
