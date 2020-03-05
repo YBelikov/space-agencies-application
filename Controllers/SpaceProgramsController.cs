@@ -12,10 +12,9 @@ namespace SpaceAgenciesDatabaseApp.Controllers
     public class SpaceProgramsController : Controller
     {
         private readonly SpaceAgenciesDbContext _context;
-        private readonly SpaceAgencies agency;
+        private SelectList agencies;
         public SpaceProgramsController(SpaceAgenciesDbContext context)
         {
-            agency = new SpaceAgencies();
             _context = context;
         }
 
@@ -55,7 +54,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: SpacePrograms/Create
         public IActionResult Create()
         {
-            CreateAgenciesDropDownList(agency);
+            CreateAgenciesDropDownList();
             return View();
         }
 
@@ -68,10 +67,6 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                AgenciesPrograms newPair = new AgenciesPrograms();
-                newPair.SpaceAgencyId = agency.Id; 
-                newPair.SpaceProgramId = spacePrograms.Id;
-                _context.Add(newPair);
                 _context.Add(spacePrograms);
                 await _context.SaveChangesAsync();
 
@@ -139,7 +134,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         private void CreateAgenciesDropDownList(object selectedAgency = null)
         {
 
-            ViewData["Agencies"] = new SelectList(_context.SpaceAgencies, "Id", "Name", selectedAgency);
+            agencies = new SelectList(_context.SpaceAgencies, "Id", "Name", selectedAgency);
+            ViewData["Agencies"] = agencies;
         }
         public async Task<IActionResult> Delete(int? id)
         {

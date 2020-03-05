@@ -70,9 +70,9 @@
                         title: "Missions to programs ratio",
                         width: 800,
                         height: 600,
-                        pieHole: 0.4
+                        
                     };
-                chart = new google.visualization.PieChart(document.getElementById('chart2'));
+                chart = new google.visualization.ColumnChart(document.getElementById('chart2'));
                 chart.draw(data, option);
             })
         }

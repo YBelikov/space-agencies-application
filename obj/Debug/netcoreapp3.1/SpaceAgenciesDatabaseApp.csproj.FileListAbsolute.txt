@@ -63,7 +63,6 @@ D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\SpaceAgenciesDatabaseApp.Views.pdb
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\SpaceAgenciesDatabaseApp.dll
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\SpaceAgenciesDatabaseApp.pdb
-D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\SpaceAgenciesDatabaseApp.MvcApplicationPartsAssemblyInfo.cache
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.dll
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.dll
@@ -192,3 +191,10 @@ D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\Razor\Views\ProgramsStates\Details.cshtml.g.cs
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\Razor\Views\ProgramsStates\Edit.cshtml.g.cs
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\Razor\Views\ProgramsStates\Index.cshtml.g.cs
+D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
+D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\SpaceAgenciesDatabaseApp.MvcApplicationPartsAssemblyInfo.cache
+D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
