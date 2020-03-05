@@ -198,3 +198,4 @@ D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\SpaceAgenciesDatabaseApp.MvcApplicationPartsAssemblyInfo.cache
 D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
+D:\CSharp\SpaceAgenciesDatabaseApp\SpaceAgenciesDatabaseApp\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs

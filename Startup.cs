@@ -61,7 +61,7 @@ namespace SpaceAgenciesDatabaseApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=SpaceAgencies}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
