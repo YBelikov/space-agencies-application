@@ -1,17 +1,19 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
-<h1>List of users   </h1>
+<h2>Role list</h2>
 <table class="table">
-    @foreach(var user in Model)
-    {
-        <tr>
-            <td>@user.Email</td>
+@foreach (var role in Model)
+{
+    <tr>
+        <td>@role.Name</td>
             <td>
-                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-rout-userid ="@user.id">Access rights</a>
+                <form asp-action = "Delete" asp-route-id = "@role.Id" method = "post">
+                    <button type = "submit" class="btn btn-sm btn-danger">
+                        Delete
+                    </button>
+            </form>
             </td>
-        </tr>
-    }
+   </tr>
+}
 </table>
+<a asp-action="UserList"></a>;
