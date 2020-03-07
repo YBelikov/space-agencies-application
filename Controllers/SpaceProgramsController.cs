@@ -12,7 +12,6 @@ namespace SpaceAgenciesDatabaseApp.Controllers
     public class SpaceProgramsController : Controller
     {
         private readonly SpaceAgenciesDbContext _context;
-        private SelectList agencies;
         public SpaceProgramsController(SpaceAgenciesDbContext context)
         {
             _context = context;
@@ -21,12 +20,15 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: SpacePrograms
         public async Task<IActionResult> Index(int? id)
         {
+
+            
             if (id == null)
             {
                 var allPrograms = _context.SpacePrograms;
                 return View(allPrograms);
             }
-            ViewBag.SpaceAgencyId = id;
+            ViewBag.AgencyId = id;
+            ViewBag.AgencyName = _context.SpaceAgencies.Where(a => a.Id == id).FirstOrDefault().Name;
             var programsAndAgenices = _context.SpaceAgencies.Include(a => a.AgenciesPrograms)
                 .ThenInclude(ap => ap.SpaceProgram).FirstOrDefault(a => a.Id == id);
             var programs = programsAndAgenices.AgenciesPrograms.Select(ap => ap.SpaceProgram).ToList();
@@ -36,6 +38,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: SpacePrograms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -52,9 +55,11 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         }
 
         // GET: SpacePrograms/Create
-        public IActionResult Create()
+        public IActionResult Create(int agencyId)
         {
-            CreateAgenciesDropDownList();
+            ViewBag.AgencyId = agencyId;
+            ViewBag.AgencyName = _context.SpaceAgencies.Where(a => a.Id == agencyId).FirstOrDefault().Name;
+
             return View();
         }
 
@@ -63,11 +68,20 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,StartDate,EndDate,Target")] SpacePrograms spacePrograms)
+        public async Task<IActionResult> Create(int agencyId, [Bind("Id,Title,StartDate,EndDate,Target")] SpacePrograms spacePrograms)
         {
             if (ModelState.IsValid)
             {
+                AgenciesPrograms newPair = new AgenciesPrograms();
+                var agency = _context.SpaceAgencies.Where(a => a.Id == agencyId).FirstOrDefault();
+                newPair.SpaceAgency = agency;
+                newPair.SpaceProgram = spacePrograms;
+                newPair.SpaceAgencyId = agencyId;
+                newPair.SpaceProgramId = spacePrograms.Id;
+                spacePrograms.AgenciesPrograms.Add(newPair);
+                agency.AgenciesPrograms.Add(newPair);
                 _context.Add(spacePrograms);
+                _context.Add(newPair);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
@@ -125,18 +139,13 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            CreateAgenciesDropDownList();
+            
            
             return View(spacePrograms);
         }
 
         // GET: SpacePrograms/Delete/5
-        private void CreateAgenciesDropDownList(object selectedAgency = null)
-        {
-
-            agencies = new SelectList(_context.SpaceAgencies, "Id", "Name", selectedAgency);
-            ViewData["Agencies"] = agencies;
-        }
+       
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

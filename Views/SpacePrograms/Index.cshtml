@@ -4,10 +4,11 @@
     ViewData["Title"] = "Space programs";
 }
 
-<h1>Space programs</h1>
+<h1>@ViewBag.AgencyName program </h1>
 
 <p>
-    <a asp-action="Create">Create program</a>
+    @Html.ActionLink("Create new program", "Create", new {agencyId = @ViewBag.AgencyId} )
+
 </p>
 <table class="table">
     <thead>
@@ -24,11 +25,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Target)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProgramsStates)
-            </th>
-            <th></th>
-        </tr>
+         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
@@ -46,7 +43,7 @@
                 @Html.DisplayFor(modelItem => item.Target)
             </td>
             <td>
-                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
