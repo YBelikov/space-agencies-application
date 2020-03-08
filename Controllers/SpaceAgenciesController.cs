@@ -21,7 +21,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: SpaceAgencies
         public async Task<IActionResult> Index()
         {
-            var spaceAgenciesDbContext = _context.SpaceAgencies.Include(s => s.HeadquarterCountry);
+            var spaceAgenciesDbContext = _context.SpaceAgencies.Include(s => s.HeadquarterCountry).Include(s=>s.Administrators);
             return View(await spaceAgenciesDbContext.ToListAsync());
         }
 

@@ -13,7 +13,7 @@ namespace SpaceAgenciesDatabaseApp
 
         public int Id { get; set; }
         [Required(ErrorMessage = "Field shouldn't be empty")]
-        [Display(Name = "Agency name")]
+        [Display(Name = "Agency name")] 
         public string Name { get; set; }
 
         [Display(Name = "Establishment date")]

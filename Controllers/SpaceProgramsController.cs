@@ -24,13 +24,14 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             
             if (id == null)
             {
-                var allPrograms = _context.SpacePrograms;
+                var allPrograms = _context.SpacePrograms.Include(p => p.ProgramsStates).ThenInclude(ps => ps.State);
                 return View(allPrograms);
             }
             ViewBag.AgencyId = id;
             ViewBag.AgencyName = _context.SpaceAgencies.Where(a => a.Id == id).FirstOrDefault().Name;
             var programsAndAgenices = _context.SpaceAgencies.Include(a => a.AgenciesPrograms)
-                .ThenInclude(ap => ap.SpaceProgram).FirstOrDefault(a => a.Id == id);
+                .ThenInclude(ap => ap.SpaceProgram).Include(a => a.AgenciesPrograms).ThenInclude(ap => ap.SpaceProgram)
+                .ThenInclude(p => p.ProgramsStates).ThenInclude(ps => ps.State).FirstOrDefault(a => a.Id == id);          
             var programs = programsAndAgenices.AgenciesPrograms.Select(ap => ap.SpaceProgram).ToList();
             return View(programs);
         }

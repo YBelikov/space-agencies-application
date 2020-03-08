@@ -25,7 +25,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Target)
             </th>
-         </tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProgramsStates)
+            </th>
+        </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
@@ -42,6 +45,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Target)
             </td>
+            @if (item.ProgramsStates.Count != 0)
+            {
+                @foreach (var state in item.ProgramsStates)
+                {
+                   <td>
+                    @Html.DisplayFor(modelItem => state.State.StateName)
+                   </td>
+                }
+            }
+            else
+            {
+                <td>
+                </td>
+            }
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SpaceAgenciesDatabaseApp
 {
-    public partial class Administrators
-    {
+    public partial class Administrators { 
+            
         public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

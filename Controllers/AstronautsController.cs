@@ -26,10 +26,14 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 var spaceAgenciesDbContext = _context.Astronauts.Include(a => a.Country);
                 return View(await spaceAgenciesDbContext.ToListAsync());
             }
+            ViewBag.CrewId = id;
             var astronautsAndCrews = _context.Crews.Include(crews => crews.CrewsAstronauts).ThenInclude(crew => crew.Astronaut)
-                .FirstOrDefault(crews => crews.Id == id);
-            var astronauts = astronautsAndCrews.CrewsAstronauts.Select(c => c.Astronaut).ToList();
-            return View(astronauts);
+                .Include(crews => crews.CrewsAstronauts).ThenInclude(crew => crew.Astronaut.Country)
+               .FirstOrDefault(crews => crews.Id == id);
+           // var astronautsAndCrews = _context.Astronauts.Include(a => a.Country).Include(a => a.CrewsAstronauts)
+            //    .ThenInclude(ca => ca.Crew).FirstOrDefault(a => a.CrewId == id);
+                var astronauts = astronautsAndCrews.CrewsAstronauts.Select(c => c.Astronaut).ToList();
+                return View(astronauts);
         }
 
         // GET: Astronauts/Details/5
@@ -52,9 +56,12 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         }
 
         // GET: Astronauts/Create
-        public IActionResult Create()
+        public IActionResult Create(int crewId)
         {
+
             ViewData["CountryId"] = new SelectList(_context.Countires, "Id", "CountryName");
+            ViewBag.CrewId = crewId;
+             
             return View();
         }
 
@@ -63,16 +70,23 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,BirthDate,Duty,CrewId,CountryId")] Astronauts astronauts)
+        public async Task<IActionResult> Create(int crewId, [Bind("Id,Name,Surname,BirthDate,Duty,CrewId,CountryId")] Astronauts astronaut)
         {
+
             if (ModelState.IsValid)
             {
-                _context.Add(astronauts);
+                CrewsAstronauts newPair = new CrewsAstronauts();
+                newPair.CrewId = crewId;
+                newPair.AstronautId = astronaut.Id;
+                newPair.Crew = _context.Crews.Where(c => c.Id == crewId).FirstOrDefault();
+                newPair.Astronaut = astronaut;
+                _context.Add(astronaut);
+                _context.Add(newPair);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CountryId"] = new SelectList(_context.Countires, "Id", "CountryName", astronauts.CountryId);
-            return View(astronauts);
+            ViewData["CountryId"] = new SelectList(_context.Countires, "Id", "CountryName", astronaut.CountryId);
+            return View(astronaut);
         }
 
         // GET: Astronauts/Edit/5

@@ -45,7 +45,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            return RedirectToAction("Index", "Astronauts", id);
+            return RedirectToAction("Index", "Astronauts", new { Id = crews.Id});
            // return View(crews);
         }
 
