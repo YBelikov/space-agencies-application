@@ -122,7 +122,11 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 try
                 {
+                    CrewsAstronauts pair = _context.CrewsAstronauts.Where(ca => ca.AstronautId == astronauts.Id).FirstOrDefault();
+                    pair.CrewId = astronauts.CrewId;
+                    pair.Crew = _context.Crews.Where(c => c.Id == astronauts.CrewId).FirstOrDefault();
                     _context.Update(astronauts);
+                    _context.Update(pair);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

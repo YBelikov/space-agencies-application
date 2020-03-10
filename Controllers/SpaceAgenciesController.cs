@@ -147,11 +147,18 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             var spaceAgencies = _context.SpaceAgencies.Include(a => a.AgenciesPrograms)
                 .ThenInclude(ap => ap.SpaceProgram).FirstOrDefault(a => a.Id == id);
             var programs = spaceAgencies.AgenciesPrograms.Select(ap => ap.SpaceProgram).ToList();
+            
             foreach (var program in programs)
             {
+                var agencyAndProgram = await _context.AgenciesPrograms.FirstOrDefaultAsync(ap => ap.SpaceProgramId == program.Id);
+                _context.AgenciesPrograms.Remove(agencyAndProgram);
+                var programAndState = await _context.ProgramsStates.FirstOrDefaultAsync(ps => ps.ProgramId == program.Id);
+                _context.ProgramsStates.Remove(programAndState);
                 _context.SpacePrograms.Remove(program);
+
             }
-            
+            var administrator = await _context.Administrators.FirstOrDefaultAsync(a => a.SpaceAgencyId == id);
+            _context.Administrators.Remove(administrator);
             _context.SpaceAgencies.Remove(spaceAgencies); 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

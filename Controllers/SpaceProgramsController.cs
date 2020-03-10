@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SpaceAgenciesDatabaseApp;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using ClosedXML.Excel;
+
 
 namespace SpaceAgenciesDatabaseApp.Controllers
 {
@@ -21,7 +25,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         public async Task<IActionResult> Index(int? id)
         {
 
-            
+
             if (id == null)
             {
                 var allPrograms = _context.SpacePrograms.Include(p => p.ProgramsStates).ThenInclude(ps => ps.State);
@@ -31,7 +35,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             ViewBag.AgencyName = _context.SpaceAgencies.Where(a => a.Id == id).FirstOrDefault().Name;
             var programsAndAgenices = _context.SpaceAgencies.Include(a => a.AgenciesPrograms)
                 .ThenInclude(ap => ap.SpaceProgram).Include(a => a.AgenciesPrograms).ThenInclude(ap => ap.SpaceProgram)
-                .ThenInclude(p => p.ProgramsStates).ThenInclude(ps => ps.State).FirstOrDefault(a => a.Id == id);          
+                .ThenInclude(p => p.ProgramsStates).ThenInclude(ps => ps.State).FirstOrDefault(a => a.Id == id);
             var programs = programsAndAgenices.AgenciesPrograms.Select(ap => ap.SpaceProgram).ToList();
             return View(programs);
         }
@@ -39,7 +43,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: SpacePrograms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            
+
             if (id == null)
             {
                 return NotFound();
@@ -51,7 +55,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            return RedirectToAction("Index", "Missions", new { Id = spacePrograms.Id});
+            return RedirectToAction("Index", "Missions", new { Id = spacePrograms.Id });
             //return View(spacePrograms);
         }
 
@@ -60,6 +64,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             ViewBag.AgencyId = agencyId;
             ViewBag.AgencyName = _context.SpaceAgencies.Where(a => a.Id == agencyId).FirstOrDefault().Name;
+            ViewData["StateId"] = new SelectList(_context.States, "Id", "StateName");
 
             return View();
         }
@@ -69,7 +74,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int agencyId, [Bind("Id,Title,StartDate,EndDate,Target")] SpacePrograms spacePrograms)
+        public async Task<IActionResult> Create(int agencyId, [Bind("Id,Title,StartDate,EndDate,Target,StateId")] SpacePrograms spacePrograms)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +96,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             return View(spacePrograms);
         }
 
-    
+
         // GET: SpacePrograms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -140,13 +145,13 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            
-           
+
+
             return View(spacePrograms);
         }
 
         // GET: SpacePrograms/Delete/5
-       
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -180,5 +185,43 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             return _context.SpacePrograms.Any(e => e.Id == id);
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Import(IFormFile excelFile)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (excelFile != null)
+        //        {
+        //            using (var stream = new FileStream(excelFile.FileName, FileMode.Create))
+        //            {
+        //                await excelFile.CopyToAsync(stream);
+        //                using (XLWorkbook workbook = new XLWorkbook(stream, XLEventTracking.Disabled))
+        //                {
+        //                    foreach(IXLWorksheet worksheet in workbook.Worksheets)
+        //                    {
+        //                        SpaceAgencies newAgency;
+        //                        var a = (from agency in _context.SpaceAgencies
+        //                                 where agency.Name.Contains(worksheet.Name)
+        //                                 select agency).ToList();
+        //                        if(a.Count > 0)
+        //                        {
+        //                            newAgency = a[0];
+        //                        }
+        //                        else
+        //                        {
+        //                            newAgency = new SpaceAgencies();
+        //                            newAgency.Name = worksheet.Name;
+
+        //                        }
+        //                    }
+        //                }
+        //            }
+
+        //        }
+        //    }
+        //}
     }
+
 }

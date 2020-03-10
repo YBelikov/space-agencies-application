@@ -21,7 +21,6 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         public JsonResult JsonData()
         {
             var agencies = _context.SpaceAgencies.Include(a => a.AgenciesPrograms).ThenInclude(ap => ap.SpaceProgram).ToList();
-           // var programs = agenciesAndPrograms.AgenciesPrograms.Select(ap => ap.SpaceProgram).ToList();
             List<object> agenciesAndProgramsCount = new List<object>();
             agenciesAndProgramsCount.Add(new[] { "Agency", "Number of programs" });
             foreach(var a in agencies)
