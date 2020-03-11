@@ -123,6 +123,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
 
         // GET: SpaceAgencies/Delete/5
         public async Task<IActionResult> Delete(int? id)
+
         {
             if (id == null)
             {
@@ -146,19 +147,13 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             var spaceAgencies = _context.SpaceAgencies.Include(a => a.AgenciesPrograms)
                 .ThenInclude(ap => ap.SpaceProgram).FirstOrDefault(a => a.Id == id);
-            var programs = spaceAgencies.AgenciesPrograms.Select(ap => ap.SpaceProgram).ToList();
+               var programs = spaceAgencies.AgenciesPrograms.Select(ap => ap.SpaceProgram).ToList();
             
             foreach (var program in programs)
-            {
-                var agencyAndProgram = await _context.AgenciesPrograms.FirstOrDefaultAsync(ap => ap.SpaceProgramId == program.Id);
-                _context.AgenciesPrograms.Remove(agencyAndProgram);
-                var programAndState = await _context.ProgramsStates.FirstOrDefaultAsync(ps => ps.ProgramId == program.Id);
-                _context.ProgramsStates.Remove(programAndState);
-                _context.SpacePrograms.Remove(program);
-
+            { 
+                DeleteProgram(program);
             }
-            var administrator = await _context.Administrators.FirstOrDefaultAsync(a => a.SpaceAgencyId == id);
-            _context.Administrators.Remove(administrator);
+            DeleteAgencyAdmin(id);
             _context.SpaceAgencies.Remove(spaceAgencies); 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -167,6 +162,20 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         private bool SpaceAgenciesExists(int id)
         {
             return _context.SpaceAgencies.Any(e => e.Id == id);
+        }
+        private async void DeleteAgencyAdmin(int? id)
+        {
+            var administrator = await _context.Administrators.FirstOrDefaultAsync(a => a.SpaceAgencyId == id);
+            _context.Administrators.Remove(administrator);
+
+        }
+        private async void DeleteProgram(SpacePrograms program)
+        {
+            var agencyAndProgram = await _context.AgenciesPrograms.FirstOrDefaultAsync(ap => ap.SpaceProgramId == program.Id);
+            _context.AgenciesPrograms.Remove(agencyAndProgram);
+            var programAndState = await _context.ProgramsStates.FirstOrDefaultAsync(ps => ps.ProgramId == program.Id);
+            _context.ProgramsStates.Remove(programAndState);
+            _context.SpacePrograms.Remove(program);
         }
     }
 }

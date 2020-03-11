@@ -150,12 +150,25 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var crews = await _context.Crews.FindAsync(id);
-            _context.Crews.Remove(crews);
+            DeleteCrewAndAstronautRecordFromJoinTable(id);
+            DeleteCrew(id);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        private async void DeleteCrewAndAstronautRecordFromJoinTable(int id)
+        {
+            var crewAndItAstronauts =  await _context.CrewsAstronauts.Where(ca => ca.CrewId == id).ToListAsync();
+            foreach(var record in crewAndItAstronauts)
+            {
+                _context.CrewsAstronauts.Remove(record);
+            }
+        }
+        private async void DeleteCrew(int id)
+        {
+            var crew = await _context.Crews.FindAsync(id);
+            _context.Crews.Remove(crew);
+        }
         private bool CrewsExists(int id)
         {
             return _context.Crews.Any(e => e.Id == id);

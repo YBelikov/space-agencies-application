@@ -174,17 +174,27 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
-            var spacePrograms = await _context.SpacePrograms.FindAsync(id);
-            _context.SpacePrograms.Remove(spacePrograms);
+            DeleteStateOfProgram(id);
+            DeleteProgram(id);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        private async void DeleteStateOfProgram(int id)
+        {
+            var programState = await _context.ProgramsStates.Where(ps => ps.ProgramId == id).FirstOrDefaultAsync();
+            _context.ProgramsStates.Remove(programState);
+        }
 
+        private async void DeleteProgram(int id)
+        {
+            var spacePrograms = await _context.SpacePrograms.FindAsync(id);
+            _context.SpacePrograms.Remove(spacePrograms);
+        }
         private bool SpaceProgramsExists(int id)
         {
             return _context.SpacePrograms.Any(e => e.Id == id);
         }
+
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
