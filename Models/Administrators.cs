@@ -14,8 +14,11 @@ namespace SpaceAgenciesDatabaseApp
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
+
+        [Display(Name = "Agency")]
         public int SpaceAgencyId { get; set; }
 
+        [Display(Name = "Agency")]
         public virtual SpaceAgencies SpaceAgency { get; set; }
     }
 }

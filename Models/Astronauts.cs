@@ -21,6 +21,7 @@ namespace SpaceAgenciesDatabaseApp
         public DateTime BirthDate { get; set; }
         public string Duty { get; set; }
         public int CrewId { get; set; }
+        [Display(Name = "Country")]
         public int CountryId { get; set; }
 
         public virtual Countires Country { get; set; }

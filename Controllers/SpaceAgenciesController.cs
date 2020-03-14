@@ -47,7 +47,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: SpaceAgencies/Create
         public IActionResult Create()
         {
-            ViewData["HeadquarterCountryId"] = new SelectList(_context.Countires, "Id", "CountryName");
+            ViewData["HeadquarterCountry"] = new SelectList(_context.Countires, "Id", "CountryName");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HeadquarterCountryId"] = new SelectList(_context.Countires, "Id", "CountryName", spaceAgencies.HeadquarterCountryId);
+            ViewData["HeadquarterCountry"] = new SelectList(_context.Countires, "Id", "CountryName", spaceAgencies.HeadquarterCountryId);
             return View(spaceAgencies);
         }
 
@@ -81,7 +81,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["HeadquarterCountryId"] = new SelectList(_context.Countires, "Id", "CountryName", spaceAgencies.HeadquarterCountryId);
+            ViewData["HeadquarterCountry"] = new SelectList(_context.Countires, "Id", "CountryName", spaceAgencies.HeadquarterCountryId);
             return View(spaceAgencies);
         }
 
@@ -117,7 +117,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["HeadquarterCountryId"] = new SelectList(_context.Countires, "Id", "CountryName", spaceAgencies.HeadquarterCountryId);
+            ViewData["HeadquarterCountry"] = new SelectList(_context.Countires, "Id", "CountryName", spaceAgencies.HeadquarterCountryId);
             return View(spaceAgencies);
         }
 

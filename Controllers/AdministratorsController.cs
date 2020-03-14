@@ -49,7 +49,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: Administrators/Create
         public IActionResult Create()
         {
-            ViewData["SpaceAgencyId"] = new SelectList(_context.SpaceAgencies, "Id", "Name");
+            ViewData["Agency"] = new SelectList(_context.SpaceAgencies, "Id", "Name");
             return View();
         }
 
@@ -66,7 +66,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SpaceAgencyId"] = new SelectList(_context.SpaceAgencies, "Id", "Name", administrators.SpaceAgencyId);
+            ViewData["Agency"] = new SelectList(_context.SpaceAgencies, "Id", "Name", administrators.SpaceAgencyId);
             return View(administrators);
         }
 
@@ -83,7 +83,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["SpaceAgencyId"] = new SelectList(_context.SpaceAgencies, "Id", "Name", administrators.SpaceAgencyId);
+            ViewData["Agency"] = new SelectList(_context.SpaceAgencies, "Id", "Name", administrators.SpaceAgencyId);
             return View(administrators);
         }
 
@@ -119,7 +119,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SpaceAgencyId"] = new SelectList(_context.SpaceAgencies, "Id", "Name", administrators.SpaceAgencyId);
+            ViewData["Agency"] = new SelectList(_context.SpaceAgencies, "Id", "Name", administrators.SpaceAgencyId);
             return View(administrators);
         }
 

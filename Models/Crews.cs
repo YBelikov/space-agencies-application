@@ -15,6 +15,7 @@ namespace SpaceAgenciesDatabaseApp
 
         [Display(Name = "Number of crew members")]
         public int NumberOfMembers { get; set; }
+        [Display(Name = "Mission")]
         public int MissionId { get; set; }
 
         public virtual Missions Mission { get; set; }

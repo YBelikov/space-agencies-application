@@ -52,7 +52,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: Crews/Create
         public IActionResult Create()
         {
-            ViewData["MissionId"] = new SelectList(_context.Missions, "Id", "Title");
+            ViewData["Mission"] = new SelectList(_context.Missions, "Id", "Title");
             return View();
         }
 
@@ -69,7 +69,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MissionId"] = new SelectList(_context.Missions, "Id", "Title", crews.MissionId);
+            ViewData["Mission"] = new SelectList(_context.Missions, "Id", "Title", crews.MissionId);
             return View(crews);
         }
 
@@ -86,7 +86,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["MissionId"] = new SelectList(_context.Missions, "Id", "Title", crews.MissionId);
+            ViewData["Mission"] = new SelectList(_context.Missions, "Id", "Title", crews.MissionId);
             return View(crews);
         }
 
@@ -122,7 +122,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MissionId"] = new SelectList(_context.Missions, "Id", "Title", crews.MissionId);
+            ViewData["Mission"] = new SelectList(_context.Missions, "Id", "Title", crews.MissionId);
             return View(crews);
         }
 

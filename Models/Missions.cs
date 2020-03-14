@@ -23,6 +23,8 @@ namespace SpaceAgenciesDatabaseApp
         public string Title { get; set; }
         [Display(Name = "Is robotic")]
         public bool IsRobotic { get; set; }
+      
+        [Display(Name = "Program")]
         public int ProgramId { get; set; }
 
         public virtual SpacePrograms Program { get; set; }

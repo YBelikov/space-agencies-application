@@ -53,7 +53,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // GET: Missions/Create
         public IActionResult Create()
         {
-            ViewData["ProgramId"] = new SelectList(_context.SpacePrograms, "Id", "Target");
+            ViewData["Program"] = new SelectList(_context.SpacePrograms, "Id", "Title");
             return View();
         }
 
@@ -70,7 +70,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProgramId"] = new SelectList(_context.SpacePrograms, "Id", "Target", missions.ProgramId);
+            ViewData["Program"] = new SelectList(_context.SpacePrograms, "Id", "Title", missions.ProgramId);
             return View(missions);
         }
 
@@ -87,7 +87,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProgramId"] = new SelectList(_context.SpacePrograms, "Id", "Target", missions.ProgramId);
+            ViewData["Program"] = new SelectList(_context.SpacePrograms, "Id", "Title", missions.ProgramId);
             return View(missions);
         }
 
@@ -123,7 +123,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProgramId"] = new SelectList(_context.SpacePrograms, "Id", "Target", missions.ProgramId);
+            ViewData["Program"] = new SelectList(_context.SpacePrograms, "Id", "Title", missions.ProgramId);
             return View(missions);
         }
 
