@@ -19,6 +19,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         public SpaceProgramsController(SpaceAgenciesDbContext context)
         {
             _context = context;
+          
         }
 
         // GET: SpacePrograms
@@ -64,8 +65,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             ViewBag.AgencyId = agencyId;
             ViewBag.AgencyName = _context.SpaceAgencies.Where(a => a.Id == agencyId).FirstOrDefault().Name;
-            ViewData["StateId"] = new SelectList(_context.States, "Id", "StateName");
 
+            //ViewData["States"] = new SelectList(_context.States, "Id", "StateName");
             return View();
         }
 
@@ -74,11 +75,14 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int agencyId, [Bind("Id,Title,StartDate,EndDate,Target,StateId")] SpacePrograms spacePrograms)
+        public async Task<IActionResult> Create(int agencyId, [Bind("Id,Title,StartDate,EndDate,Target,StateId")] SpacePrograms spacePrograms, FormCollection collection)
         {
+
             if (ModelState.IsValid)
             {
+
                 AgenciesPrograms newPair = new AgenciesPrograms();
+               
                 var agency = _context.SpaceAgencies.Where(a => a.Id == agencyId).FirstOrDefault();
                 newPair.SpaceAgency = agency;
                 newPair.SpaceProgram = spacePrograms;
@@ -196,42 +200,6 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         }
 
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Import(IFormFile excelFile)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (excelFile != null)
-        //        {
-        //            using (var stream = new FileStream(excelFile.FileName, FileMode.Create))
-        //            {
-        //                await excelFile.CopyToAsync(stream);
-        //                using (XLWorkbook workbook = new XLWorkbook(stream, XLEventTracking.Disabled))
-        //                {
-        //                    foreach(IXLWorksheet worksheet in workbook.Worksheets)
-        //                    {
-        //                        SpaceAgencies newAgency;
-        //                        var a = (from agency in _context.SpaceAgencies
-        //                                 where agency.Name.Contains(worksheet.Name)
-        //                                 select agency).ToList();
-        //                        if(a.Count > 0)
-        //                        {
-        //                            newAgency = a[0];
-        //                        }
-        //                        else
-        //                        {
-        //                            newAgency = new SpaceAgencies();
-        //                            newAgency.Name = worksheet.Name;
-
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //        }
-        //    }
-        //}
     }
 
 }

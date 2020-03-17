@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpaceAgenciesDatabaseApp
 {
@@ -11,6 +12,7 @@ namespace SpaceAgenciesDatabaseApp
         }
 
         public int Id { get; set; }
+        [Display(Name = "State")]
         public string StateName { get; set; }
 
         public virtual ICollection<ProgramsStates> ProgramsStates { get; set; }

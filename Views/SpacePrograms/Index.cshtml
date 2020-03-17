@@ -11,20 +11,6 @@
 
 </p>
 
-<div>
-    <h3>Choose excel-file to load data</h3>
-    @using (Html.BeginForm("Import", "SpacePrograms", FormMethod.Post, new { enctype = "multipart/form-data", id = "frm-excel" }))
-    {
-        <div>
-            Load Excel-file:
-            <input type="file" name="fileExcel" id="fileExcel" />
-            <div>
-                <input type="submit" value="Load">
-            </div>
-        </div>
-    }
-</div>
-
 <table class="table">
     <thead>
         <tr>
