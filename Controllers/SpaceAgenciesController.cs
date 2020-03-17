@@ -225,8 +225,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             for(int i = 0; i < programs.Count; ++i)
             {
                 worksheet.Cell(i + 2, indexOfFirstProgramCell).Value = programs[i].Title;
-                worksheet.Cell(i + 2, indexOfFirstProgramCell + 1).Value = programs[i].StartDate;
-                worksheet.Cell(i + 2, indexOfFirstProgramCell + 2).Value = programs[i].EndDate;
+                worksheet.Cell(i + 2, indexOfFirstProgramCell + 1).Value = programs[i].StartDate.ToString();
+                worksheet.Cell(i + 2, indexOfFirstProgramCell + 2).Value = programs[i].EndDate.ToString();
                 worksheet.Cell(i + 2, indexOfFirstProgramCell + 3).Value = programs[i].ProgramsStates.First().State.StateName;
                 worksheet.Cell(i + 2, indexOfFirstProgramCell + 4).Value = programs[i].Target;
             }
