@@ -51,33 +51,43 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateOfEstablishment)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Budget)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HeadquarterCountry.CountryName)
-                </td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfEstablishment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budget)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HeadquarterCountry.CountryName)
+            </td>
+            @if (item.Administrators.Count > 0)
+            {
+
 
                 @foreach (var admin in item.Administrators)
                 {
+
                     <td>
                         @Html.DisplayFor(modelItem => admin.Name)
                         @Html.DisplayFor(modelItem => admin.Surname)
                     </td>
                 }
+            }
+            else
+            {
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
-            </tr>
+            }
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

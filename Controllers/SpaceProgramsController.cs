@@ -183,15 +183,15 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        private async void DeleteStateOfProgram(int id)
+        private  void DeleteStateOfProgram(int id)
         {
-            var programState = await _context.ProgramsStates.Where(ps => ps.ProgramId == id).FirstOrDefaultAsync();
+            var programState = _context.ProgramsStates.Where(ps => ps.ProgramId == id).FirstOrDefault();
             _context.ProgramsStates.Remove(programState);
         }
 
-        private async void DeleteProgram(int id)
+        private void DeleteProgram(int id)
         {
-            var spacePrograms = await _context.SpacePrograms.FindAsync(id);
+            var spacePrograms =  _context.SpacePrograms.Find(id);
             _context.SpacePrograms.Remove(spacePrograms);
         }
         private bool SpaceProgramsExists(int id)

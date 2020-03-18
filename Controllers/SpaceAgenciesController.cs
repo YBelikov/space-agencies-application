@@ -168,17 +168,17 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             return _context.SpaceAgencies.Any(e => e.Id == id);
         }
-        private async void DeleteAgencyAdmin(int? id)
+        private void DeleteAgencyAdmin(int? id)
         {
-            var administrator = await _context.Administrators.FirstOrDefaultAsync(a => a.SpaceAgencyId == id);
+            var administrator =  _context.Administrators.FirstOrDefault(a => a.SpaceAgencyId == id);
             _context.Administrators.Remove(administrator);
 
         }
-        private async void DeleteProgram(SpacePrograms program)
+        private void DeleteProgram(SpacePrograms program)
         {
-            var agencyAndProgram = await _context.AgenciesPrograms.FirstOrDefaultAsync(ap => ap.SpaceProgramId == program.Id);
+            var agencyAndProgram =  _context.AgenciesPrograms.FirstOrDefault(ap => ap.SpaceProgramId == program.Id);
             _context.AgenciesPrograms.Remove(agencyAndProgram);
-            var programAndState = await _context.ProgramsStates.FirstOrDefaultAsync(ps => ps.ProgramId == program.Id);
+            var programAndState =  _context.ProgramsStates.FirstOrDefault(ps => ps.ProgramId == program.Id);
             _context.ProgramsStates.Remove(programAndState);
             _context.SpacePrograms.Remove(program);
         }
@@ -284,7 +284,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        private async void CreateAgencyAndCountry(IXLWorksheet worksheet)
+        private void CreateAgencyAndCountry(IXLWorksheet worksheet)
         {
             SpaceAgencies newAgency;
             var a = (from agency in _context.SpaceAgencies
@@ -298,7 +298,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 newAgency = CreateAgency(worksheet);
                 var row = RowWithIndexInWorksheet(worksheet, 0, 1);
-                var country = await _context.Countires.FirstOrDefaultAsync(c => c.CountryName.Contains(row.Cell(3).Value.ToString()));
+                var country =  _context.Countires.FirstOrDefault(c => c.CountryName.Contains(row.Cell(3).Value.ToString()));
                 if (country != null)
                 {
                     AttachExistingCountryToAgency(newAgency, country);
@@ -318,7 +318,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             }
         }
 
-        private async void CreateProgramsForAgency(SpaceAgencies newAgency, IXLRow row)
+        private  void CreateProgramsForAgency(SpaceAgencies newAgency, IXLRow row)
         {
             int indexOfFirstProgramField = 6;
             try
@@ -334,7 +334,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 else
                 {
                     program = CreateProgram(row, indexOfFirstProgramField);
-                    States state = await _context.States.FirstOrDefaultAsync(s => s.StateName == row.Cell(indexOfFirstProgramField + 3)
+                    States state =  _context.States.FirstOrDefault(s => s.StateName == row.Cell(indexOfFirstProgramField + 3)
                                     .Value.ToString());
                     _context.SpacePrograms.Add(program);
                     AddNewProgramAndStatePairToContext(program, state);
@@ -370,7 +370,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             var row = RowWithIndexInWorksheet(worksheet, 0, 1);
             country.CountryName = row.Cell(3).Value.ToString();
             country.Gdp = Decimal.Parse(row.Cell(4).Value.ToString());
-            country.Population = Int32.Parse(row.Cell(5).Value.ToString());
+            country.Population = Double.Parse(row.Cell(5).Value.ToString());
             return country;
         }
         private SpacePrograms CreateProgram(IXLRow row, int indexOfFirstProgramField)
