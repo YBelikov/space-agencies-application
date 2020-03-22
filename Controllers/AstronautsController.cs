@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SpaceAgenciesDatabaseApp;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SpaceAgenciesDatabaseApp.Controllers
 {
+    [Authorize(Roles = "admin, user")]
     public class AstronautsController : Controller
     {
         private readonly SpaceAgenciesDbContext _context;

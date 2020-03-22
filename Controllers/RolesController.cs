@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using SpaceAgenciesDatabaseApp.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using SpaceAgenciesDatabaseApp.Models;
 
 namespace SpaceAgenciesDatabaseApp.Controllers
 {
+    [Authorize(Roles = "admin, user")]
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
@@ -18,14 +20,10 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
-        public IActionResult Index() 
-        {
-            return View(_roleManager.Roles.ToList());
-        }
-        public IActionResult UserList()
-        {
-            return View(_userManager.Users.ToList());
-        }
+        public IActionResult Index() => View(_roleManager.Roles.ToList());
+        
+        public IActionResult UserList() => View(_userManager.Users.ToList());
+        
 
         public async Task<IActionResult> Edit(string userId)
         {

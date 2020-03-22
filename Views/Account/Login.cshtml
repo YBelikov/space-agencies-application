@@ -7,7 +7,7 @@
 <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
-        <label asp-for="Email"></label><br />
+        @Html.Label("Username")<br />
         <input asp-for="Email" />
         <span asp-validation-for="Email"></span>
     </div>
@@ -23,6 +23,7 @@
     <div>
         <input type="submit" value="Login" />
     </div>
+    <h4>If you don't have account already just <a asp-controller="Account" asp-action="Register">Sign Up</a></h4>
 </form>
 
 

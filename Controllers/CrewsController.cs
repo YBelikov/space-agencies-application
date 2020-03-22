@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using SpaceAgenciesDatabaseApp;
 
 namespace SpaceAgenciesDatabaseApp.Controllers
 {
+    [Authorize(Roles = "admin, user")]
     public class CrewsController : Controller
     {
         private readonly SpaceAgenciesDbContext _context;

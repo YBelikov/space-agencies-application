@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using SpaceAgenciesDatabaseApp;
 using Microsoft.AspNetCore.Http;
 using System.IO;
@@ -12,6 +13,7 @@ using ClosedXML.Excel;
 
 namespace SpaceAgenciesDatabaseApp.Controllers
 {
+    [Authorize(Roles = "admin, user")]
     public class SpaceAgenciesController : Controller
     {
         private readonly SpaceAgenciesDbContext _context;

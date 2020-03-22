@@ -33,7 +33,7 @@ namespace SpaceAgenciesDatabaseApp
             string identityConnection = Configuration.GetConnectionString("IdentityConnection");
 
             services.AddDbContext<IdentityContext>(options => options.UseSqlServer(identityConnection));
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
+            services.AddIdentity<User, IdentityRole>(options => { options.User.RequireUniqueEmail = true; options.User.AllowedUserNameCharacters = "@abcdefghijklmnopqrstuvwxyz123456789"; }).AddEntityFrameworkStores<IdentityContext>();
             services.AddControllersWithViews();
           }
 

@@ -1,17 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 @if (User.Identity.IsAuthenticated)
 {
-    <p>@User.Identity.Name</p>
+    <h2>User: </h2><h2>@User.Identity.Name</h2>
+    <h3>Click on "Exit" button to log out</h3>
     <form method="post" asp-controller="Account" asp-action="Logout">
-        <input type ="submit" value="Exit"/>
+        <input type="submit" value="Exit" />
     </form>
 
 }
 else
 {
-    <a asp-controller="Account" asp-action="Login">Log in</a>
-    <a asp-controller="Account" asp-action="Register">Register</a>
+    <h3>Hello, user! To see content of the app you have to register or log in to you account</h3>
+    <p><a asp-controller="Account" asp-action="Login">Log in</a></p>
+    <p><a asp-controller="Account" asp-action="Register">Register</a></p>
 }

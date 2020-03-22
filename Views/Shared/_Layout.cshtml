@@ -27,10 +27,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="SpaceAgencies" asp-action="Index">Space Agencies</a>
                         </li>
+                        @if (User.IsInRole("admin"))
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Administrators" asp-action="Index">Administrators</a>
                         </li>
-
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="SpacePrograms" asp-action="Index">Space Programs</a>
                         </li>
@@ -43,13 +45,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Astronauts" asp-action="Index">Astronauts</a>
                         </li>
+                        @if (User.IsInRole("admin"))
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Countires" asp-action="Index">Countries</a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Users</a>
                         </li>
-
+                        }
                     </ul>
                 </div>
             </div>

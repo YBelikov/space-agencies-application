@@ -30,13 +30,14 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Name = model.Name, Surname = model.Surname, Email = model.Email,
-                    UserName = model.Username};
+                User user = new User { Name = model.Name, Surname = model.Surname,
+                    UserName = model.Username, Email = model.Email
+                  };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "SpaceAgencies");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -68,7 +69,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "SpaceAgencies");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else
