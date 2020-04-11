@@ -14,8 +14,12 @@ namespace SpaceAgenciesDatabaseApp
 
         public int Id { get; set; }
         [Display(Name = "Name")]
+        [RegularExpression("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*", ErrorMessage = "Invalid country name input")]
         public string CountryName { get; set; }
+        [BudgetValidation(ErrorMessage = "GDP can't be less or equal to zero")]
         public decimal Gdp { get; set; }
+
+        [BudgetValidation(ErrorMessage = "Population can't be less or equal to zero")]
         public double Population { get; set; }
 
         public virtual ICollection<Astronauts> Astronauts { get; set; }

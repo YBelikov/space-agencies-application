@@ -57,6 +57,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CountryName,Gdp,Population")] Countires countires)
         {
+            if (await findCountriesWithTheSameName(countires) != null) ModelState.AddModelError(String.Empty, "Country with this name already exists");
             if (ModelState.IsValid)
             {
                 _context.Add(countires);
@@ -93,7 +94,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-
+            if (await findCountriesWithTheSameName(countires) != null) ModelState.AddModelError(String.Empty, "Country with this name already exists");
             if (ModelState.IsValid)
             {
                 try
@@ -117,6 +118,10 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             return View(countires);
         }
 
+        public async Task<Countires> findCountriesWithTheSameName(Countires countires)
+        {
+            return await _context.Countires.FirstOrDefaultAsync(c => c.CountryName == countires.CountryName);
+        }
         // GET: Countires/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -124,8 +129,9 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-
-            var countires = await _context.Countires
+            var agenciesInTheCountry = await _context.SpaceAgencies.FirstOrDefaultAsync(a => a.HeadquarterCountryId == id);
+            if (agenciesInTheCountry != null) ModelState.AddModelError(String.Empty, "Country has an agency, delete agency before country");
+                var countires = await _context.Countires
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (countires == null)
             {
@@ -141,19 +147,14 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var countires = await _context.Countires.FindAsync(id);
-            var agenciesInTheCountry = await _context.SpaceAgencies.FirstOrDefaultAsync(a => a.HeadquarterCountryId == id);
-            if (agenciesInTheCountry == null)
+            if (countires != null)
             {
                 _context.Countires.Remove(countires);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                ModelState.AddModelError("Agency", "You can't delete a country which has still agencies");
-            }
-
+            
             return View(countires);
         }
 
