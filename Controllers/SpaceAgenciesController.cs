@@ -63,14 +63,18 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,DateOfEstablishment,Budget,HeadquarterCountryId")] SpaceAgencies spaceAgencies)
         {
+            
+            if (await findAgencyInTheSameCountry(spaceAgencies) != null) ModelState.AddModelError(String.Empty, "This country already has an agency");
+            if (await findAgencyWithTheSameName(spaceAgencies) != null) ModelState.AddModelError(String.Empty, "Agency with this name already exists");
             if (ModelState.IsValid)
             {
                 _context.Add(spaceAgencies);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                 await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));   
             }
             ViewData["HeadquarterCountry"] = new SelectList(_context.Countires, "Id", "CountryName", spaceAgencies.HeadquarterCountryId);
             return View(spaceAgencies);
+
         }
 
         // GET: SpaceAgencies/Edit/5
@@ -80,9 +84,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-
             var spaceAgencies = await _context.SpaceAgencies.Include(a => a.Administrators).Include(a => a.HeadquarterCountry).Include(a => a.AgenciesPrograms)
-                                .ThenInclude(ap => ap.SpaceProgram).FirstOrDefaultAsync(a => a.Id == id);
+                               .ThenInclude(ap => ap.SpaceProgram).FirstOrDefaultAsync(a => a.Id == id);
             if (spaceAgencies == null)
             {
                 return NotFound();
@@ -102,7 +105,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-
+            if(findAgencyInTheSameCountry(spaceAgencies) != null) ModelState.AddModelError(String.Empty, "This country already has an agency");
+            if (await findAgencyWithTheSameName(spaceAgencies) != null) ModelState.AddModelError(String.Empty, "Agency with this name already exists");
             if (ModelState.IsValid)
             {
                 try
@@ -129,8 +133,16 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         }
 
         // GET: SpaceAgencies/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<SpaceAgencies> findAgencyInTheSameCountry(SpaceAgencies spaceAgencies)
+        {
+            return await _context.SpaceAgencies.FirstOrDefaultAsync(a => a.HeadquarterCountryId == spaceAgencies.HeadquarterCountryId);
+        }
 
+        public async Task<SpaceAgencies> findAgencyWithTheSameName(SpaceAgencies spaceAgencies)
+        {
+           return await _context.SpaceAgencies.FirstOrDefaultAsync(a => a.Name == spaceAgencies.Name);
+        }
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -172,9 +184,11 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         }
         private void DeleteAgencyAdmin(int? id)
         {
-            var administrator =  _context.Administrators.FirstOrDefault(a => a.SpaceAgencyId == id);
-            _context.Administrators.Remove(administrator);
-
+            var administrator = _context.Administrators.FirstOrDefault(a => a.SpaceAgencyId == id);
+            if (administrator != null)
+            {
+               _context.Administrators.Remove(administrator);
+            }
         }
         private void DeleteProgram(SpacePrograms program)
         {

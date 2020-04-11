@@ -141,9 +141,20 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var countires = await _context.Countires.FindAsync(id);
-            _context.Countires.Remove(countires);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var agenciesInTheCountry = await _context.SpaceAgencies.FirstOrDefaultAsync(a => a.HeadquarterCountryId == id);
+            if (agenciesInTheCountry == null)
+            {
+                _context.Countires.Remove(countires);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError("Agency", "You can't delete a country which has still agencies");
+            }
+
+            return View(countires);
         }
 
         private bool CountiresExists(int id)
