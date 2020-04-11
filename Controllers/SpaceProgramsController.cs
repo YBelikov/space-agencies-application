@@ -67,8 +67,8 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             ViewBag.AgencyId = agencyId;
             ViewBag.AgencyName = _context.SpaceAgencies.Where(a => a.Id == agencyId).FirstOrDefault().Name;
-
-            //ViewData["States"] = new SelectList(_context.States, "Id", "StateName");
+            
+            ViewData["States"] = new SelectList(_context.States, "Id", "StateName");
             return View();
         }
 
@@ -85,7 +85,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
 
                 AgenciesPrograms newPair = new AgenciesPrograms();
-               
+                
                 var agency = _context.SpaceAgencies.Where(a => a.Id == agencyId).FirstOrDefault();
                 newPair.SpaceAgency = agency;
                 newPair.SpaceProgram = spacePrograms;
@@ -206,8 +206,59 @@ namespace SpaceAgenciesDatabaseApp.Controllers
 
         private void DeleteProgram(int id)
         {
-            var spacePrograms =  _context.SpacePrograms.Find(id);
-            _context.SpacePrograms.Remove(spacePrograms);
+            var program = _context.SpacePrograms.Find(id);
+            var agencyAndProgram = _context.AgenciesPrograms.FirstOrDefault(ap => ap.SpaceProgramId == program.Id);
+            _context.AgenciesPrograms.Remove(agencyAndProgram);
+            DeleteMissions(program);
+            var programAndState = _context.ProgramsStates.FirstOrDefault(ps => ps.ProgramId == program.Id);
+            if (programAndState != null)
+            {
+                _context.ProgramsStates.Remove(programAndState);
+            }
+            _context.SpacePrograms.Remove(program);
+        }
+        private void DeleteMissions(SpacePrograms program)
+        {
+            var missions = _context.Missions.Where(m => m.ProgramId == program.Id);
+            if (missions != null)
+            {
+                foreach (var mission in missions)
+                {
+                    DeleteCrew(mission);
+                    _context.Missions.Remove(mission);
+                }
+            }
+        }
+        private void DeleteCrew(Missions mission)
+        {
+            var crews = _context.Crews.Where(c => c.MissionId == mission.Id).ToList();
+            if (crews != null)
+            {
+                foreach (var crew in crews)
+                {
+                    DeleteAstronauts(crew);
+                    _context.Crews.Remove(crew);
+                }
+            }
+        }
+        private void DeleteAstronauts(Crews crew)
+        {
+            var astronauts = _context.Astronauts.Where(a => a.CrewId == crew.Id).ToList();
+            var crewAndAstronauts = _context.CrewsAstronauts.Where(ca => ca.CrewId == crew.Id).ToList();
+            if (crewAndAstronauts != null)
+            {
+                foreach (var ca in crewAndAstronauts)
+                {
+                    _context.CrewsAstronauts.Remove(ca);
+                }
+            }
+            if (astronauts != null)
+            {
+                foreach (var astronaut in astronauts)
+                {
+                    _context.Astronauts.Remove(astronaut);
+                }
+            }
         }
         private bool SpaceProgramsExists(int id)
         {

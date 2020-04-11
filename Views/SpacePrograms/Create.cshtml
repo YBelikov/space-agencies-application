@@ -33,7 +33,7 @@
             </div>
             @*<div class="form-group">
                   @Html.LabelFor(modelItem => Model.ProgramsStates.First().State.StateName)
-                  @Html.DropDownListFor(modelItem => modelItem.CurrentState.Id, ViewData["States"] as SelectList, "Select state",
+                  @Html.DropDownListFor(modelItem => modelItem.ProgramsStates.First().StateId, ViewData["States"] as SelectList, "Select state",
                                           new {@class ="form-control" })
 
              </div>*@

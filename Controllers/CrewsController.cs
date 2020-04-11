@@ -65,7 +65,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NumberOfMembers,MissionId")] Crews crews)
         {
-            if (await _context.Crews.FirstOrDefaultAsync(c => c.MissionId == crews.MissionId) != null) ModelState.AddModelError(String.Empty, "This mission ");
+            if (await _context.Crews.FirstOrDefaultAsync(c => c.MissionId == crews.MissionId) != null) ModelState.AddModelError(String.Empty, "This mission already has a crew");
             if (ModelState.IsValid)
             {
                 _context.Add(crews);
@@ -160,18 +160,39 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async void DeleteCrewAndAstronautRecordFromJoinTable(int id)
+        private void DeleteCrewAndAstronautRecordFromJoinTable(int id)
         {
-            var crewAndItAstronauts =  await _context.CrewsAstronauts.Where(ca => ca.CrewId == id).ToListAsync();
+            var crewAndItAstronauts =  _context.CrewsAstronauts.Where(ca => ca.CrewId == id).ToList();
             foreach(var record in crewAndItAstronauts)
             {
                 _context.CrewsAstronauts.Remove(record);
             }
         }
-        private async void DeleteCrew(int id)
+        private void DeleteCrew(int id)
         {
-            var crew = await _context.Crews.FindAsync(id);
+            var crew = _context.Crews.Find(id);
+            DeleteAstronauts(crew);
             _context.Crews.Remove(crew);
+        }
+
+        private void DeleteAstronauts(Crews crew)
+        {
+            var astronauts = _context.Astronauts.Where(a => a.CrewId == crew.Id).ToList();
+            var crewAndAstronauts = _context.CrewsAstronauts.Where(ca => ca.CrewId == crew.Id).ToList();
+            if (crewAndAstronauts != null)
+            {
+                foreach (var ca in crewAndAstronauts)
+                {
+                    _context.CrewsAstronauts.Remove(ca);
+                }
+            }
+            if (astronauts != null)
+            {
+                foreach (var astronaut in astronauts)
+                {
+                    _context.Astronauts.Remove(astronaut);
+                }
+            }
         }
         private bool CrewsExists(int id)
         {

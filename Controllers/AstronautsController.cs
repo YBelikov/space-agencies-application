@@ -173,6 +173,11 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var astronauts = await _context.Astronauts.FindAsync(id);
+            var crewsAndAstronauts = await _context.CrewsAstronauts.Where(ca => ca.AstronautId == id).ToListAsync();
+            foreach(var ca in crewsAndAstronauts)
+            {
+                _context.CrewsAstronauts.Remove(ca);
+            }
             _context.Astronauts.Remove(astronauts);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

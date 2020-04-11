@@ -105,14 +105,14 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            if(findAgencyInTheSameCountry(spaceAgencies) != null) ModelState.AddModelError(String.Empty, "This country already has an agency");
-            if (await findAgencyWithTheSameName(spaceAgencies) != null) ModelState.AddModelError(String.Empty, "Agency with this name already exists");
-            if (ModelState.IsValid)
+             if (ModelState.IsValid)
             {
                 try
                 {
                     
                     _context.Update(spaceAgencies);
+                    if (await findAgencyInTheSameCountry(spaceAgencies) != null) ModelState.AddModelError(String.Empty, "This country already has an agency");
+                    if (await findAgencyWithTheSameName(spaceAgencies) != null) ModelState.AddModelError(String.Empty, "Agency with this name already exists");
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -194,9 +194,58 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             var agencyAndProgram =  _context.AgenciesPrograms.FirstOrDefault(ap => ap.SpaceProgramId == program.Id);
             _context.AgenciesPrograms.Remove(agencyAndProgram);
+            DeleteMissions(program);
             var programAndState =  _context.ProgramsStates.FirstOrDefault(ps => ps.ProgramId == program.Id);
-            _context.ProgramsStates.Remove(programAndState);
+            if (programAndState != null)
+            {
+                _context.ProgramsStates.Remove(programAndState);
+            }
             _context.SpacePrograms.Remove(program);
+        }
+
+        private void DeleteMissions(SpacePrograms program)
+        {
+            var missions = _context.Missions.Where(m => m.ProgramId == program.Id);
+            if (missions != null)
+            {
+                foreach (var mission in missions)
+                {
+                    DeleteCrew(mission);
+                    _context.Missions.Remove(mission);
+                }
+            }
+        }
+        private void DeleteCrew(Missions mission)
+        {
+            var crews = _context.Crews.Where(c => c.MissionId == mission.Id).ToList();
+            if (crews != null)
+            {
+                foreach (var crew in crews)
+                {
+                    DeleteAstronauts(crew);
+                    _context.Crews.Remove(crew);
+                }
+            }
+        }
+
+        private void DeleteAstronauts(Crews crew)
+        {
+            var astronauts = _context.Astronauts.Where(a => a.CrewId == crew.Id).ToList();
+            var crewAndAstronauts = _context.CrewsAstronauts.Where(ca => ca.CrewId == crew.Id).ToList();
+            if(crewAndAstronauts != null)
+            {
+                foreach(var ca in crewAndAstronauts)
+                {
+                    _context.CrewsAstronauts.Remove(ca);
+                }
+            }
+            if (astronauts != null)
+            {
+                foreach (var astronaut in astronauts)
+                {
+                    _context.Astronauts.Remove(astronaut);
+                }
+            }
         }
         public async Task<ActionResult> Export()
         {
