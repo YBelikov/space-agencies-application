@@ -14,6 +14,8 @@ namespace SpaceAgenciesDatabaseApp
         public int Id { get; set; }
 
         [Display(Name = "Number of crew members")]
+
+        [BudgetValidation(ErrorMessage = "Number of crew members can't be less or equal to zero")]
         public int NumberOfMembers { get; set; }
         [Display(Name = "Mission")]
         public int MissionId { get; set; }

@@ -66,6 +66,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,Title,IsRobotic,ProgramId")] Missions missions)
         {
+            if (!verifyMissionDates(missions)) ModelState.AddModelError(String.Empty, "Mission can't begin after own end");
             if (ModelState.IsValid)
             {
                 _context.Add(missions);
@@ -104,6 +105,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
+            if (!verifyMissionDates(missions)) ModelState.AddModelError(String.Empty, "Mission can't begin after own end");
 
             if (ModelState.IsValid)
             {
@@ -128,7 +130,14 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             ViewData["Program"] = new SelectList(_context.SpacePrograms, "Id", "Title", missions.ProgramId);
             return View(missions);
         }
-
+        public async Task<Missions> findMissionWithTheSameName(Missions missions)
+        {
+            return await _context.Missions.FirstOrDefaultAsync(m => m.Title.Contains(missions.Title));
+        }
+        public bool verifyMissionDates(Missions missions)
+        {
+            return missions.StartDate < missions.EndDate;
+        }
         // GET: Missions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
