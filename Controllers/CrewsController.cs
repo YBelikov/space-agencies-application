@@ -65,7 +65,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NumberOfMembers,MissionId")] Crews crews)
         {
-         //   if(await _context.Crews.FirstOrDefaultAsync(c => c.MissionId == crews.MissionId) != null) ModelState.AddModelError(String.Empty, "This mission ")
+            if (await _context.Crews.FirstOrDefaultAsync(c => c.MissionId == crews.MissionId) != null) ModelState.AddModelError(String.Empty, "This mission ");
             if (ModelState.IsValid)
             {
                 _context.Add(crews);
@@ -105,6 +105,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
                 return NotFound();
             }
 
+            if (await _context.Crews.FirstOrDefaultAsync(c => c.MissionId == crews.MissionId) != null) ModelState.AddModelError(String.Empty, "This mission ");
             if (ModelState.IsValid)
             {
                 try
