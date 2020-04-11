@@ -62,6 +62,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Surname,BirthDate,SpaceAgencyId")] Administrators administrators)
         {
+            if (await findAdministratorInTheSameAgency(administrators) != null) ModelState.AddModelError(String.Empty, "There couldn't be more than 1 admin in the same agency");
             if (ModelState.IsValid)
             {
                 _context.Add(administrators);
@@ -100,7 +101,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-
+            if (await findAdministratorInTheSameAgency(administrators) != null) ModelState.AddModelError(String.Empty, "There couldn't be more than 1 admin in the same agency");
             if (ModelState.IsValid)
             {
                 try
@@ -123,6 +124,11 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             }
             ViewData["Agency"] = new SelectList(_context.SpaceAgencies, "Id", "Name", administrators.SpaceAgencyId);
             return View(administrators);
+        }
+
+        public async Task<Administrators> findAdministratorInTheSameAgency(Administrators administrators)
+        {
+           return await _context.Administrators.FirstOrDefaultAsync(a => a.SpaceAgencyId == administrators.SpaceAgencyId); 
         }
 
         // GET: Administrators/Delete/5
