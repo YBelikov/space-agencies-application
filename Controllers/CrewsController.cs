@@ -163,9 +163,12 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         private void DeleteCrewAndAstronautRecordFromJoinTable(int id)
         {
             var crewAndItAstronauts =  _context.CrewsAstronauts.Where(ca => ca.CrewId == id).ToList();
-            foreach(var record in crewAndItAstronauts)
+            if (crewAndItAstronauts != null)
             {
-                _context.CrewsAstronauts.Remove(record);
+                foreach (var record in crewAndItAstronauts)
+                {
+                    _context.CrewsAstronauts.Remove(record);
+                }
             }
         }
         private void DeleteCrew(int id)

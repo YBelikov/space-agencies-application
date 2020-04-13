@@ -80,7 +80,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         public async Task<IActionResult> Create(int agencyId, [Bind("Id,Title,StartDate,EndDate,Target,StateId")] SpacePrograms spacePrograms, IFormCollection collection)
         {
             if (await findProgramWithTheSameName(spacePrograms) != null) ModelState.AddModelError(String.Empty, "Program with this name already exists");
-            if (!validateProgramDates(spacePrograms)) ModelState.AddModelError(String.Empty, "Program can't start after own end date");
+           
             if (ModelState.IsValid)
             {
 
@@ -131,14 +131,13 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            if (await findProgramWithTheSameName(spacePrograms) != null) ModelState.AddModelError(String.Empty, "Program with this name already exists");
-            if (!validateProgramDates(spacePrograms)) ModelState.AddModelError(String.Empty, "Program can't start after own end date");
-
+           
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(spacePrograms);
+                    if (await findProgramWithTheSameName(spacePrograms) != null) ModelState.AddModelError(String.Empty, "Program with this name already exists");
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -164,11 +163,6 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             return await _context.SpacePrograms.FirstOrDefaultAsync(p => p.Title == spacePrograms.Title); 
         }
 
-        public bool validateProgramDates(SpacePrograms spacePrograms)
-        {
-            return spacePrograms.StartDate < spacePrograms.EndDate;
-            
-        }
         // GET: SpacePrograms/Delete/5
 
         public async Task<IActionResult> Delete(int? id)

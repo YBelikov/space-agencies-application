@@ -18,6 +18,7 @@ namespace SpaceAgenciesDatabaseApp
         [DataType(DataType.Date)]
 
         [DateValidation("31.12.1870", ErrorMessage = "Administrator couldn't be older than oldest human in the world or come us from future")]
+        [MinAge(23)]
         public DateTime BirthDate { get; set; }
 
         [Display(Name = "Agency")]

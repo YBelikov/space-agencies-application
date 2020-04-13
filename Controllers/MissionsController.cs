@@ -39,17 +39,23 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-
             var missions = await _context.Missions
                 .Include(m => m.Program)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (missions == null)
+            if (!missions.IsRobotic)
             {
-                return NotFound();
-            }
+                if (missions == null)
+                {
+                    return NotFound();
+                }
 
-            //  return View(missions);
-            return RedirectToAction("Index", "Crews", id);
+                //  return View(missions);
+                return RedirectToAction("Index", "Crews", id);
+            }
+            else
+            {
+                return View(missions);
+            }
         }
 
         // GET: Missions/Create
@@ -66,7 +72,6 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,Title,IsRobotic,ProgramId")] Missions missions)
         {
-            if (!verifyMissionDates(missions)) ModelState.AddModelError(String.Empty, "Mission can't begin after own end");
             if (ModelState.IsValid)
             {
                 _context.Add(missions);
@@ -105,14 +110,13 @@ namespace SpaceAgenciesDatabaseApp.Controllers
             {
                 return NotFound();
             }
-            if (!verifyMissionDates(missions)) ModelState.AddModelError(String.Empty, "Mission can't begin after own end");
-
+            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(missions);
-                    await _context.SaveChangesAsync();
+                    _context.Update(missions);    
+                        await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -134,10 +138,7 @@ namespace SpaceAgenciesDatabaseApp.Controllers
         {
             return await _context.Missions.FirstOrDefaultAsync(m => m.Title.Contains(missions.Title));
         }
-        public bool verifyMissionDates(Missions missions)
-        {
-            return missions.StartDate < missions.EndDate;
-        }
+  
         // GET: Missions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

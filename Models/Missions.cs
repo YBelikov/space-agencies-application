@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace SpaceAgenciesDatabaseApp
 {
-    public partial class Missions
+    public partial class Missions : IValidatableObject
     {
         public Missions()
         {
@@ -32,5 +32,13 @@ namespace SpaceAgenciesDatabaseApp
 
         public virtual SpacePrograms Program { get; set; }
         public virtual ICollection<Crews> Crews { get; set; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            if (StartDate > EndDate) errors.Add(new ValidationResult("Mission can't start after own end"));
+            return errors;
+        }
+ 
+        
     }
 }

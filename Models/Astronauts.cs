@@ -23,6 +23,7 @@ namespace SpaceAgenciesDatabaseApp
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         [DateValidation("01.12.1910", ErrorMessage = "Correct your input for birth date")]
+        [MinAge(23)]
         public DateTime BirthDate { get; set; }
 
         [RegularExpression("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*", ErrorMessage = "Invalid duty input")]
@@ -33,5 +34,6 @@ namespace SpaceAgenciesDatabaseApp
 
         public virtual Countires Country { get; set; }
         public virtual ICollection<CrewsAstronauts> CrewsAstronauts { get; set; }
+       
     }
 }

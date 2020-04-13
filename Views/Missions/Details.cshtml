@@ -7,6 +7,12 @@
 <h1>Details</h1>
 
 <div>
+    @if (Model.IsRobotic)
+    {
+        <h4>The mission is robotic hence there is no crew</h4>
+    }
+    else
+    {
     <h4>Missions</h4>
     <hr />
     <dl class="row">
@@ -41,6 +47,7 @@
             @Html.DisplayFor(model => model.Program.Target)
         </dd>
     </dl>
+    }
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
